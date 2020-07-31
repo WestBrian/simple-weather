@@ -5,12 +5,15 @@
   "scripts": {
     "prestart": "npm run css",
     "start": "react-scripts start",
+    "prestart:local": "npm run css",
+    "start:local": "concurrently \"npm run local:api\" \"react-scripts start\"",
     "prebuild": "npm run css",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
-    "css": "tailwind build ./src/index.tailwind.css -c ./tailwind.config.js -o ./src/index.css"
+    "css": "tailwind build ./src/index.tailwind.css -c ./tailwind.config.js -o ./src/index.css",
+    "local:api": "json-server --watch db.json --port 3001"
   },
   "husky": {
     "hooks": {
@@ -26,8 +29,10 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "date-fns": "^2.15.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-query": "^2.5.9",
     "react-scripts": "3.4.1",
     "tailwindcss": "^1.6.0",
     "typescript": "^3.7.5"
@@ -37,7 +42,9 @@
     "@types/node": "^12.12.53",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "concurrently": "^5.2.0",
     "husky": "^4.2.5",
+    "json-server": "^0.16.1",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5"
   },
