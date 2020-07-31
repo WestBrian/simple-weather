@@ -3,11 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prestart": "npm run css",
     "start": "react-scripts start",
+    "prebuild": "npm run css",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\""
+    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx}\"",
+    "css": "tailwind build ./src/index.tailwind.css -c ./tailwind.config.js -o ./src/index.css"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -16,6 +29,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
+    "tailwindcss": "^1.6.0",
     "typescript": "^3.7.5"
   },
   "devDependencies": {
@@ -23,6 +37,8 @@
     "@types/node": "^12.12.53",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.5"
   },
   "eslintConfig": {
