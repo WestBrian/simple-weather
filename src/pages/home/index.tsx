@@ -13,11 +13,8 @@ function kelvinToF(kelvin: number) {
 export const HomePage: FC = () => {
   const urlParameters = new URLSearchParams()
   urlParameters.append('zip', '23059')
-  if (process.env.REACT_APP_API_KEY) {
-    urlParameters.append('appid', process.env.REACT_APP_API_KEY)
-  }
 
-  const { data } = useQuery<CurrentWeatherResponse, string>(
+  const { data, error } = useQuery<CurrentWeatherResponse, string>(
     'currentWeather',
     () =>
       fetch(
@@ -25,8 +22,12 @@ export const HomePage: FC = () => {
       ).then((res) => res.json())
   )
 
+  if (error) {
+    return <div>{error.message}</div>
+  }
+
   if (!data) {
-    return null
+    return <div>Fetching...</div>
   }
 
   return (
