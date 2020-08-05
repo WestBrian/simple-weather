@@ -4,13 +4,14 @@ import { MetaText } from 'components/text/MetaText'
 interface CurrentWeatherProps {
   currentTemp: number
   feelsLikeTemp: number
-  location?: string
+  location: string
   sunset: string
 }
 
 export const CurrentWeather: FC<CurrentWeatherProps> = ({
   currentTemp,
   feelsLikeTemp,
+  location,
   sunset,
 }) => {
   return (
@@ -20,7 +21,7 @@ export const CurrentWeather: FC<CurrentWeatherProps> = ({
         <span className={'text-2xl text-gray-400 font-light py-4'}>°F</span>
       </div>
       <div>
-        <MetaText>Barcelona, Spain</MetaText>
+        <MetaText>{location}</MetaText>
       </div>
       <div>
         <MetaText>

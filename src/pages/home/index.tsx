@@ -3,7 +3,7 @@ import { DateInfo } from './DateInfo'
 import { CurrentWeather } from './CurrentWeather'
 import { useQuery } from 'react-query'
 import { CurrentWeatherResponse } from 'types'
-import { format } from 'date-fns'
+import { format, fromUnixTime } from 'date-fns'
 
 function kelvinToF(kelvin: number) {
   const celsius = kelvin - 273
@@ -11,9 +11,18 @@ function kelvinToF(kelvin: number) {
 }
 
 export const HomePage: FC = () => {
+  const urlParameters = new URLSearchParams()
+  urlParameters.append('zip', '23059')
+  if (process.env.REACT_APP_API_KEY) {
+    urlParameters.append('appid', process.env.REACT_APP_API_KEY)
+  }
+
   const { data } = useQuery<CurrentWeatherResponse, string>(
     'currentWeather',
-    () => fetch(`http://localhost:3001/weather`).then((res) => res.json())
+    () =>
+      fetch(
+        `${process.env.REACT_APP_API_HOST}/weather?${urlParameters.toString()}`
+      ).then((res) => res.json())
   )
 
   if (!data) {
@@ -25,11 +34,15 @@ export const HomePage: FC = () => {
       <div className={'text-center'}>
         <p className={'text-gray-200'}>Weather Forecast</p>
       </div>
-      <DateInfo />
+      <DateInfo
+        date={format(fromUnixTime(data.dt), '	iii, d MMM')}
+        weatherIconId={data.weather[0].icon}
+      />
       <CurrentWeather
         currentTemp={kelvinToF(data.main.temp)}
         feelsLikeTemp={kelvinToF(data.main.feels_like)}
-        sunset={format(data.sys.sunset, 'hh:mm a')}
+        location={data.name}
+        sunset={format(fromUnixTime(data.sys.sunset), 'hh:mm a')}
       />
     </div>
   )
